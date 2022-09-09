@@ -1,3 +1,8 @@
+// Define variables 
+let scorePlayer = 0;
+let scoreComputer = 0; 
+let computerSelection = getComputerChoice();
+
 // Ramdom generator for the computer
 function getComputerChoice() {
     // Create an array
@@ -7,70 +12,63 @@ function getComputerChoice() {
     return comRandom;
 }
 
-// Plays one round of rock, paper, scissor
+// Plays rounds of rock, paper, scissor
 function playRound(playerSelection,computerSelection) {
-
-    // Case-insensitive
-    playerSelection = playerSelection.toUpperCase().slice(0,1) + playerSelection.toLowerCase().slice(1,);
-
-    //Who wins the round?
-    if(playerSelection === "Rock" && computerSelection === "Paper") {
-        scoreComputer++;
-        return "You Lose! Paper beats Rock";
-    }
-    else if(playerSelection === "Paper" && computerSelection === "Scissor") {
-        scoreComputer++;
-        return "You Lose! Scissor beats Paper";
+      
+    while(scorePlayer <5 && scoreComputer <5){
         
+            let computerSelection = getComputerChoice();
+            playerSelection;
+        
+            //Who wins the round?
+            if((playerSelection === "Rock" && computerSelection === "Paper") ||
+                (playerSelection === "Paper" && computerSelection === "Scissor") ||
+                (playerSelection === "Scissor" && computerSelection === "Rock")) { 
+
+                scoreComputer++;
+                result.textContent = "You lose! " + computerSelection +  " beats " + playerSelection;
+                score.textContent = "Player: " + scorePlayer + " |   Computer: " + scoreComputer;
+            }  
+
+            else if(playerSelection === computerSelection) {
+                result.textContent = "It's even!";                                                                   
+                score.textContent = "Player: " + scorePlayer + " |   Computer: " + scoreComputer;
+            }
+
+            else {
+                scorePlayer++;
+                result.textContent = "You won! " + playerSelection + " beats " + computerSelection;                 
+                score.textContent = "Player: " + scorePlayer + "  |  Computer: " + scoreComputer;
+            }
+            break;
+        }
+
+    // Who won the game of 5 rounds?
+    if(scorePlayer == 5) { 
+        result.textContent = "You Won the game! Congrats!";
+        score.textContent = "Player: " + scorePlayer + "  |  Computer: " + scoreComputer;
     }
-    else if(playerSelection === "Scissor" && computerSelection === "Rock") {
-        scoreComputer++;
-        return "You Lose! Rock beats Scissor";
-    } 
-    else if(playerSelection === computerSelection) {
-        return "It's Even!";
-    }
-    else {
-        scorePlayer++;
-        return "You Won! " + playerSelection + " beats " + computerSelection; 
+    else if(scoreComputer == 5) {
+        result.textContent =  "You lost the game! Better luck next time.";
+        score.textContent = "Player: " + scorePlayer + "  |  Computer: " + scoreComputer;
     }
 }
 
-// Define variables 
-let scorePlayer = 0;
-let scoreComputer = 0; 
-let computerSelection = getComputerChoice();
+// Call function with button
+let playerSelection = document.querySelectorAll('button'); 
+playerSelection.forEach((button) => {
+    button.addEventListener('click',function() {
+        playRound(button.id,computerSelection);
+    })
+})
 
-// function for whole game
-function game() {
- 
-    // 5 games of Rock, Paper, Scissors
-    for(let i = 0; i < 5; i++) {
+// Create div and class for results
 
-        let playerSelection = prompt("Rock, Paper or Scrissor?");
-        let computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection,computerSelection));
+const results = document.querySelector('#results');
+const result = document.createElement('div');
+result.classList.add('result');
+results.appendChild(result);
 
-        // Counts score
-        if("You Lose! Paper beats Rock" || "You Lose! Rock beats Scissor" || "You Lose! Scissor beats Paper"){
-            console.log("Player: " + scorePlayer + "    Computer: " + scoreComputer);
-        }
-        else if("You Won! " + playerSelection + " beats " + computerSelection) {
-            console.log("Player: " + scorePlayer + "    Computer: " + scoreComputer);
-        }
-        else if("It's Even!") {
-             console.log("Player: " + scorePlayer + "    Computer: " + scoreComputer);
-        }         
-    } 
-
-    // Who won the game?
-    if(scoreComputer > scorePlayer) {
-        console.log("You lost the game!")
-    }
-    else if(scorePlayer > scoreComputer) {
-        console.log("You won the game!")
-    }else {
-        console.log("It's a tie!")
-    }
-}     
-console.log(game());
+const score = document.createElement('div');
+score.classList.add('score');
+results.appendChild(score);
